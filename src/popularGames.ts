@@ -28,7 +28,7 @@ export default class PopularGames {
             }) => {
                 gamesHTML += `
                     <div class="col-md-4">
-                        <div class="card" style="width: 25rem;">
+                        <div class="card" style="width: 23.5rem; height: 17rem;">
                             <div class="card-body">
                                 <h5 class="card-title">${game.Title}</h5>
                                 <p class="card-text"><strong>Műfaj:</strong> ${game.Metadata.Genres}</p>

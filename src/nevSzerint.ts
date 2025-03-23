@@ -1,46 +1,24 @@
-export default class ByConsole {
+export default class ByName {
     constructor() {
-        this.selectedConsole();
-        document.querySelector(".btn")?.addEventListener("click", this.filterByConsole.bind(this));
+        document.querySelector(".btn")?.addEventListener("click", this.filteredByName.bind(this));
     }
 
-    async selectedConsole() {
+
+    async filteredByName() {
         const response = await fetch("http://localhost:3000/games");
         const games = await response.json();
-        const select = document.querySelector(".console-select") as HTMLSelectElement;
-
-        games.forEach((game: {
-            Title: string;
-            Metadata: { Genres: string };
-            Metrics: { ReviewScore: number; UsedPrice: number };
-            Features: { MaxPlayers: number };
-            Release: { Console: string };
-        }) => {
-            let option = document.createElement("option");
-            option.value = game.Release.Console;
-            if (!select.innerHTML.includes(option.value)) {
-                option.text = game.Release.Console;
-                select.appendChild(option);
-            }
-        });
-    }
-
-    async filterByConsole() {
-        const response = await fetch("http://localhost:3000/games");
-        const games = await response.json();
-        const select = document.querySelector(".console-select") as HTMLSelectElement;
+        const search = document.querySelector("#search") as HTMLInputElement;
         const cardContainer = document.querySelector(".card-container") as HTMLDivElement;
 
         let gamesHTML = "";
-
         games.forEach((game: {
             Title: string;
-            Metadata: { Genres: string };
             Metrics: { ReviewScore: number; UsedPrice: number };
             Features: { MaxPlayers: number };
             Release: { Console: string; Year: number };
+            Metadata: { Genres: string };
         }) => {
-            if (select.value === game.Release.Console) {
+            if (game.Title.toLowerCase().includes(search.value.toLowerCase())) {
                 gamesHTML += `
                     <div class="col-md-4">
                         <div class="card" style="width: 23.5rem; height: 17rem;">
@@ -57,6 +35,7 @@ export default class ByConsole {
                 `;
             }
         });
+        console.log(gamesHTML);
         cardContainer.innerHTML = gamesHTML;
     }
 }
